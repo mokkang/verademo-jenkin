@@ -15,5 +15,5 @@ steps:
 
 - bash: 
     export SRCCLR_API_TOKEN=$SRCCLR_API_TOKEN
-    curl -sSL https://download.sourceclear.com/ci.sh | sh
+    curl https://download.sourceclear.com/ci.sh | sh
   displayName: 'Veracode SCA'

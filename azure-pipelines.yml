@@ -14,6 +14,5 @@ steps:
   displayName: 'build verademo'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    curl -sSL https://download.sourceclear.com/ci.sh | sh
+  displayName: 'Veracode SCA'

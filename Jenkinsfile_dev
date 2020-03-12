@@ -13,11 +13,13 @@ pipeline {
          }
       }
       stage('SCA SC') {
-         withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
-            sh '''
-               curl -sSL https://download.sourceclear.com/ci.sh | sh
-            '''
-          }
+         steps {
+            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+               sh '''
+                  curl -sSL https://download.sourceclear.com/ci.sh | sh
+               '''
+            }
+         }
       }
       stage('Veracode Pipeline Scan') {
          // upload and scan

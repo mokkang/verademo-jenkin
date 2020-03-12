@@ -1,4 +1,4 @@
-node {
+pipeline {
     stage('Build') {
        script {
            // Get some code from a GitHub repository

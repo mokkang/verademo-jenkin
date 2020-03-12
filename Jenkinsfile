@@ -23,7 +23,7 @@ pipeline {
               java -jar pipeline-scan.jar -vid $VERACODEID -vkey $VERACODEKEY -f ./target/verademo.war
            '''
          }
-      }	       
+      }
       stage('Veracode Sast') {
          // upload and scan
          withCredentials([usernamePassword(credentialsId: 'Veracode', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {

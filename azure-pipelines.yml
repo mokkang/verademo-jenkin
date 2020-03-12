@@ -13,6 +13,13 @@ steps:
 - script: mvn -ntp package
   displayName: 'build verademo'
 
-- bash: 
-   curl -s https://download.sourceclear.com/ci.sh | export SRCCLR_API_TOKEN=$SRCCLR_API_TOKEN sh
-  displayName: 'Veracode SCA'
+- script: |
+      export SRCCLR_SCM_NAME=VeraDemoJava
+      export SRCCLR_SCM_URI=https://dev.azure.com/cpollock/VeraDemoJava
+      export SRCCLR_SCM_REF=master
+      export SRCCLR_SCM_REF_TYPE=branch
+      export SRCCLR_SCM_REV=123456
+      export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
+      curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --skip-compile --update-advisor
+  displayName: 'Veracode SCA scan'
+ 

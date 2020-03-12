@@ -9,7 +9,7 @@ pipeline {
          steps {
             // Get some code from a GitHub repository
             git 'https://github.com/christyson/verademo'
-            sh 'mvn package'
+            sh 'mvn -ntp package'
          }
       }
       //stage('SCA SC') {

@@ -1,7 +1,7 @@
 pipeline {
    stages {
       stage('Build') {
-         script {
+         steps {
             // Get some code from a GitHub repository
             git 'https://github.com/christyson/verademo'
             sh 'mvn package'

@@ -1,0 +1,31 @@
+pipeline {
+   agent {
+      docker {
+         image 'maven:latest'
+      }
+   }
+   stages {
+      stage('Build') {
+         steps {
+            // Get some code from a GitHub repository
+            git 'https://github.com/christyson/verademo'
+            sh 'mvn package'
+         }
+      }
+      //stage('SCA SC') {
+      //   withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+      //      sh '''
+      //         curl -sSL https://download.sourceclear.com/ci.sh | sh
+      //      '''
+      //    }
+      //}
+      stage('Veracode Sast') {
+         // upload and scan
+         steps {
+            withCredentials([usernamePassword(credentialsId: 'Veracode', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
+               veracode applicationName: '$JOB_NAME', canFailJob: false, createProfile: true, criticality: 'High', fileNamePattern: '', replacementPattern: '', sandboxName: '', scanExcludesPattern: '', scanIncludesPattern: '', scanName: "$BUILD_NUMBER", teams: '', timeout: 60, uploadExcludesPattern: '', uploadIncludesPattern: '**/**.war', vid: VERACODEID, vkey: VERACODEKEY
+            }
+         }
+      }
+   }
+}

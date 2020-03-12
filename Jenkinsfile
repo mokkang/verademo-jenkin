@@ -24,7 +24,7 @@ pipeline {
          steps {
             withCredentials([usernamePassword(credentialsId: 'VeracodeNH', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
                sh '''
-                  curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+                  curl -s -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
                   unzip -o pipeline-scan-LATEST.zip
                   java -jar pipeline-scan.jar -vid $VERACODEID -vkey $VERACODEKEY -f ./target/verademo.war
                '''

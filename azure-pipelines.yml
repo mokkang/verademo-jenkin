@@ -14,6 +14,5 @@ steps:
   displayName: 'build verademo'
 
 - bash: 
-    export SRCCLR_API_TOKEN=$SRCCLR_API_TOKEN |
-    curl https://download.sourceclear.com/ci.sh | sh
+   curl -s https://download.sourceclear.com/ci.sh | export SRCCLR_API_TOKEN=$SRCCLR_API_TOKEN sh
   displayName: 'Veracode SCA'

@@ -34,3 +34,12 @@ steps:
           export SRCCLR_SCM_REF_TYPE=branch
           export SRCCLR_SCM_REV=123456
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+
+- task: Bash@3
+  displayName: Veracode Pipeline
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip pipeline-scan-LATEST.zip
+      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war

@@ -43,7 +43,7 @@ steps:
     veracodeAppProfile: 'AzureDevOps-VeraDemo_pipeline'
     version: '$(build.buildNumber)'
     filepath: '/home/vsts/work/1/s/target/verademo.war'
-    createProfile: false
+    createProfile: true
     scanStatusCheckInterval: '60'
     importResults: true
     failBuildOnPolicyFail: false

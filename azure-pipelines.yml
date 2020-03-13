@@ -14,7 +14,8 @@ steps:
   displayName: 'build verademo'
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m -q'
+    options: '-q'
+    mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'

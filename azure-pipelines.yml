@@ -16,12 +16,12 @@ steps:
     script: mvn -ntp package
   
 - task: Bash@3
-  script: |
+  displayName: 'Veracode SCA scan'
+  inputs:
+    script: |
       export SRCCLR_SCM_URI=https://github.com/christyson/verademo
       export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
       export SRCCLR_SCM_REF=master
       export SRCCLR_SCM_REF_TYPE=branch
       export SRCCLR_SCM_REV=123456
       curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
-  displayName: 'Veracode SCA scan'
- 

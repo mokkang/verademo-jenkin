@@ -13,7 +13,14 @@ steps:
 - task: Maven@3
   displayName: 'build verademo'
   inputs:
-    script: mvn -ntp package
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m -ntp'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
   
 - task: Bash@3
   displayName: 'Veracode SCA scan'

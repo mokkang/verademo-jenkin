@@ -52,8 +52,8 @@ steps:
   displayName: Veracode Flaw Import
   inputs:
     ConnectionDetailsSelection: 'Endpoint'
-    AnalysisService: 'VeracodeDemoJava'
-    veracodeAppProfile: 'AzureDevOps-VeraDemoJava'
+    AnalysisService: 'Veracode2'
+    veracodeAppProfile: 'AzureDevOps-VeraDemo_pipeline'
     sandboxName: 
     importType: 'All Unmitigated Flaws Violating Policy'
     workItemType: 'Issue'

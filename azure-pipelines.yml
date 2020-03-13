@@ -39,8 +39,8 @@ steps:
   displayName: Veracode Static Scan 
   inputs:
     ConnectionDetailsSelection: 'Endpoint'
-    AnalysisService: 'VeracodeDemoJava'
-    veracodeAppProfile: 'AzureDevOps-VeraDemoJava'
+    AnalysisService: 'Veracode2'
+    veracodeAppProfile: 'AzureDevOps-VeraDemo_pipeline'
     version: '$(build.buildNumber)'
     filepath: '/home/vsts/work/1/s/target/verademo.war'
     createProfile: false

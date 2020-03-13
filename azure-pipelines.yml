@@ -11,9 +11,10 @@ pool:
 
 steps:
 - task: Maven@3
-  script: mvn -ntp package
   displayName: 'build verademo'
-
+  inputs:
+    script: mvn -ntp package
+  
 - task: Bash@3
   script: |
       export SRCCLR_SCM_URI=https://github.com/christyson/verademo

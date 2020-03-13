@@ -35,11 +35,28 @@ steps:
           export SRCCLR_SCM_REV=123456
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
 
-- task: Bash@3
-  displayName: Veracode Pipeline
+- task: Veracode@2
+  displayName: Veracode Static Scan 
   inputs:
-    targetType: 'inline'
-    script: |
-      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-      unzip pipeline-scan-LATEST.zip
-      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war
+    ConnectionDetailsSelection: 'Endpoint'
+    AnalysisService: 'VeracodeDemoJava'
+    veracodeAppProfile: 'AzureDevOps-VeraDemoJava'
+    version: '$(build.buildNumber)'
+    filepath: '/home/vsts/work/1/s/target/verademo.war'
+    createProfile: false
+    scanStatusCheckInterval: '60'
+    importResults: true
+    failBuildOnPolicyFail: false
+
+- task: Veracode Flaw Importer@2
+  displayName: Veracode Flaw Import
+  inputs:
+    ConnectionDetailsSelection: 'Endpoint'
+    AnalysisService: 'VeracodeDemoJava'
+    veracodeAppProfile: 'AzureDevOps-VeraDemoJava'
+    sandboxName: 
+    importType: 'All Unmitigated Flaws Violating Policy'
+    workItemType: 'Issue'
+    area: '$(system.teamProject)'
+    addCustomTag: 'Veracode'
+    flawImportLimit: '1000'

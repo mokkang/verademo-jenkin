@@ -10,10 +10,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: mvn -ntp package
+- task: Maven@3
+  script: mvn -ntp package
   displayName: 'build verademo'
 
-- script: |
+- task: Bash@3
+  script: |
       export SRCCLR_SCM_URI=https://github.com/christyson/verademo
       export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
       export SRCCLR_SCM_REF=master

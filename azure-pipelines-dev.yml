@@ -41,4 +41,4 @@ steps:
     script: |
       curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip
-      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) --fail_on_severity="Very  High,  High" -id=true -sf results.txt -f /home/vsts/work/1/s/target/verademo.war
+      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) --fail_on_severity="Very  High,  High" -id=true -so=true -sf results.txt -f /home/vsts/work/1/s/target/verademo.war

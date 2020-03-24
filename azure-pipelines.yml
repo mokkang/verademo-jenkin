@@ -33,7 +33,7 @@ steps:
           export SRCCLR_SCM_REV=123456
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
 
-- task: Veracode@2
+- task: Veracode@3
   displayName: Veracode Static Scan 
   inputs:
     ConnectionDetailsSelection: 'Endpoint'
@@ -46,7 +46,7 @@ steps:
     importResults: true
     failBuildOnPolicyFail: false
 
-- task: Veracode Flaw Importer@2
+- task: Veracode Flaw Importer@3
   displayName: Veracode Flaw Import
   inputs:
     ConnectionDetailsSelection: 'Endpoint'

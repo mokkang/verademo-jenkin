@@ -32,12 +32,12 @@ steps:
           export SRCCLR_SCM_REF_TYPE=branch
           export SRCCLR_SCM_REV=123456
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
-- task: Bash@3
-  displayName: 'zip up'
-  inputs:
-     targetType: 'inline'
-     script: |
-          zip /home/vsts/work/1/s/test.zip /home/vsts/work/1/s/target/verademo.war /home/vsts/work/1/s/notepad++.exe
+# - task: Bash@3
+#   displayName: 'zip up'
+#   inputs:
+#      targetType: 'inline'
+#      script: |
+#           zip /home/vsts/work/1/s/test.zip /home/vsts/work/1/s/target/verademo.war /home/vsts/work/1/s/notepad++.exe
 - task: Veracode@3
   displayName: Veracode Static Scan 
   inputs:
@@ -45,8 +45,8 @@ steps:
     AnalysisService: 'Veracode2'
     veracodeAppProfile: 'AzureDevOps-VeraDemo_pipeline'
     version: '$(build.buildNumber)'
-#    filepath: '/home/vsts/work/1/s/target/verademo.war'
-    filepath: '/home/vsts/work/1/s/test.zip'
+    filepath: '/home/vsts/work/1/s/target/verademo.war'
+#    filepath: '/home/vsts/work/1/s/test.zip'
     createProfile: true
     scanStatusCheckInterval: '60'
     importResults: true

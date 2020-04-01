@@ -37,7 +37,7 @@ steps:
   inputs:
      targetType: 'inline'
      script: |
-          zip /home/vsts/work/1/s/test.zip /home/vsts/work/1/s/target/verademo.war /home/vsts/work/1/s/notepad++.exe'
+          zip /home/vsts/work/1/s/test.zip /home/vsts/work/1/s/target/verademo.war /home/vsts/work/1/s/notepad++.exe
 - task: Veracode@3
   displayName: Veracode Static Scan 
   inputs:

@@ -1,0 +1,51 @@
+#
+# Veracode pipeline for Azure showing Veracode ABS SCA and Veracode Pipeline Scan
+#
+
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Maven@3
+  displayName: 'build verademo'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-q'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+  
+- task: Bash@3
+  displayName: 'Veracode SCA scan'
+  inputs:
+     targetType: 'inline'
+     script: |
+          export SRCCLR_SCM_URI=https://github.com/christyson/verademo
+          export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
+          export SRCCLR_SCM_REF=master
+          export SRCCLR_SCM_REF_TYPE=branch
+          export SRCCLR_SCM_REV=123456
+          curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+
+- task: Bash@3
+  displayName: Veracode Pipeline
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      unzip pipeline-scan-LATEST.zip
+      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) --fail_on_severity="Very  High,  High" -id=true -so=true -sf results.txt -f /home/vsts/work/1/s/target/verademo.war
+    upload: /**/results.txt
+    artifact: pipeline
+    
+    task: PublishPipelineArtifact@1
+  inputs:
+    path: $(System.DefaultWorkingDirectory)/bin/WebApp
+    artifact: WebApp

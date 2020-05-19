@@ -30,9 +30,9 @@ steps:
           export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
           export SRCCLR_SCM_REF=master
           export SRCCLR_SCM_REF_TYPE=branch
-#          export SRCCLR_SCM_REV=123456
-          export SRCCLR_SCM_REV='$(build.buildNumber)'
+          export SRCCLR_SCM_REV="$(build.buildNumber)"
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+#          export SRCCLR_SCM_REV=123456
 # - task: Bash@3
 #   displayName: 'zip up'
 #   inputs:

@@ -1,0 +1,49 @@
+#
+# Veracode pipeline for Azure showing Veracode ABS SCA and Veracode Pipeline Scan
+#
+
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Maven@3
+  displayName: 'build verademo'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-q'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+  
+- task: Bash@3
+  displayName: 'Veracode SCA scan'
+  inputs:
+     targetType: 'inline'
+     script: |
+          export SRCCLR_SCM_URI=https://github.com/christyson/verademo
+          export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
+          export SRCCLR_SCM_REF=master
+          export SRCCLR_SCM_REF_TYPE=branch
+          export SRCCLR_SCM_REV=123456
+          curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+- script: |
+    curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: 'pipeline-scan-LATEST.zip'
+    cleanDestinationFolder: false
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: specific
+    project: 'test'
+    pipeline: 2
+    artifact: pipeline
+- script: |
+    java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"

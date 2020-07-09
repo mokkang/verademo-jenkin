@@ -36,11 +36,11 @@ steps:
 
 #      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) --fail_on_severity="Very  High,  High" -id=true -so=true -sf results.txt -f /home/vsts/work/1/s/target/verademo.war --json_output_file="baseline.json"
 #    upload: /**/results.txt
+#  inputs:
+#    targetType: 'inline'
 
 - task: Bash@3
   displayName: Veracode Pipeline
-  inputs:
-    targetType: 'inline'
   script: |
       curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip

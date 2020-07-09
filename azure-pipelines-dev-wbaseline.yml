@@ -42,7 +42,7 @@ steps:
 - task: DownloadPipelineArtifact@2
   inputs:
     source: specific
-    project: 'test'
+    project: 'Verademo_pipeline'
     pipeline: 2
     artifact: pipeline
 - script: |

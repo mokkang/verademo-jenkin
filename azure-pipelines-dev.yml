@@ -47,11 +47,11 @@ steps:
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'
     cleanDestinationFolder: false
-- script: |
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'
     cleanDestinationFolder: false
+- script: |
     java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --json_output_file="baseline.json" || true
 - publish: /**/baseline.json
   artifact: pipeline

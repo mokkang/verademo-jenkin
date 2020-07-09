@@ -39,14 +39,8 @@ steps:
 #  inputs:
 #    targetType: 'inline'
 
-- task: Bash@3
-  displayName: Veracode Pipeline
 - script: |
     curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-- task: ExtractFiles@1
-  inputs:
-    archiveFilePatterns: 'pipeline-scan-LATEST.zip'
-    cleanDestinationFolder: false
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'

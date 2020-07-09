@@ -44,6 +44,6 @@ steps:
     script: |
       curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
       unzip pipeline-scan-LATEST.zip
-      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) --fail_on_severity="Very  High,  High" -f /home/vsts/work/1/s/target/verademo.war --json_output_file="baseline.json"
+      java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --json_output_file="baseline.json" || true
     publish: $(System.DefaultWorkingDirectory)/baseline.json
     artifact: pipeline

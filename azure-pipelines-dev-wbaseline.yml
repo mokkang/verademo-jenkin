@@ -41,6 +41,8 @@ steps:
     cleanDestinationFolder: false
 - task: DownloadPipelineArtifact@2
   inputs:
+    source: specific
+    project: 'Verademo_pipeline'
     artifact: pipeline
 - script: |
     java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"

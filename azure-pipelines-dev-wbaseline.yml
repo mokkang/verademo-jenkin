@@ -35,6 +35,8 @@ steps:
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
 - script: |
     curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+   displayName: 'Download Latest Pipeline Scan'
+
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'

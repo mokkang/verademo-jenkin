@@ -148,12 +148,12 @@ public class UserController {
 		}
 
 		Connection connect = null;
-		/* START BAD CODE 
+		/* ORIGINAL CODE */
 		Statement sqlStatement = null;
-		/* END BAD CODE */
-                /* START GOOD CODE */
+		/* END ORIGINAL CODE */
+                /* START NEW CODE 
 		PreparedStatement sqlStatement = null;
-                /* END GOOD CODE */
+                /* END NEW CODE */
 
 		try {
 			// Get the Database Connection
@@ -161,7 +161,7 @@ public class UserController {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 
-			/* START BAD CODE 
+			/* START ORIGINAL CODE */
 			// Execute the query
 			logger.info("Creating the Statement");
 			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
@@ -169,9 +169,9 @@ public class UserController {
 			sqlStatement = connect.createStatement();
 			logger.info("Execute the Statement");
 			ResultSet result = sqlStatement.executeQuery(sqlQuery);
-			/* END BAD CODE */
+			/* END ORIGINAL CODE */
 
-			/* START GOOD CODE */ 
+			/* START NEW CODE 
 			String sqlQuery = "select * from users where username=? and password=?;";
 			logger.info("Preparing the PreparedStatement");
 			sqlStatement = connect.prepareStatement(sqlQuery);
@@ -180,7 +180,7 @@ public class UserController {
 			sqlStatement.setString(2, password);
 			logger.info("Executing the PreparedStatement");
 			ResultSet result = sqlStatement.executeQuery();
-			/* END GOOD CODE */			
+			/* END NEW CODE */			
 			
 			
 			// Did we find exactly 1 user that matched?

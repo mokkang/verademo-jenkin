@@ -43,7 +43,7 @@ steps:
   inputs:
     source: specific
     project: 'Verademo_pipeline'
-    pipelineId: 20200709.10
+    pipeline: '20200709'
     artifact: pipeline
 - script: |
     java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"

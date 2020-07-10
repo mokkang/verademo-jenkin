@@ -47,3 +47,4 @@ steps:
     artifact: pipeline
 - script: |
     java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"
+  displayName: 'Run Veracode Pipeline Scan'

@@ -22,17 +22,17 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
   
-- task: Bash@3
-  displayName: 'Veracode SCA scan'
-  inputs:
-     targetType: 'inline'
-     script: |
-          export SRCCLR_SCM_URI=https://github.com/christyson/verademo
-          export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
-          export SRCCLR_SCM_REF=master
-          export SRCCLR_SCM_REF_TYPE=branch
-          export SRCCLR_SCM_REV=123456
-          curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+#- task: Bash@3
+#  displayName: 'Veracode SCA scan'
+#  inputs:
+#     targetType: 'inline'
+#     script: |
+#          export SRCCLR_SCM_URI=https://github.com/christyson/verademo
+#          export SRCCLR_API_TOKEN="$(SRCCLR_API_TOKEN)"
+#          export SRCCLR_SCM_REF=master
+#          export SRCCLR_SCM_REF_TYPE=branch
+#          export SRCCLR_SCM_REV=123456
+#          curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
 - script: |
     curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
   displayName: 'Download Latest Pipeline Scan'

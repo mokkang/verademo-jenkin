@@ -3,7 +3,7 @@
 #
 
 trigger:
-- none
+- master
 
 pool:
   vmImage: 'ubuntu-latest'

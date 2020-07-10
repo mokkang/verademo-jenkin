@@ -148,10 +148,10 @@ public class UserController {
 		}
 
 		Connection connect = null;
-		/* ORIGINAL CODE */
+		/* ORIGINAL CODE 
 		Statement sqlStatement = null;
 		/* END ORIGINAL CODE */
-                /* START NEW CODE 
+                /* START NEW CODE */
 		PreparedStatement sqlStatement = null;
                 /* END NEW CODE */
 
@@ -161,7 +161,7 @@ public class UserController {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 
-			/* START ORIGINAL CODE */
+			/* START ORIGINAL CODE 
 			// Execute the query
 			logger.info("Creating the Statement");
 			String sqlQuery = "select username, password, password_hint, created_at, last_login, real_name, blab_name from users where username='"
@@ -171,7 +171,7 @@ public class UserController {
 			ResultSet result = sqlStatement.executeQuery(sqlQuery);
 			/* END ORIGINAL CODE */
 
-			/* START NEW CODE 
+			/* START NEW CODE */
 			String sqlQuery = "select * from users where username=? and password=?;";
 			logger.info("Preparing the PreparedStatement");
 			sqlStatement = connect.prepareStatement(sqlQuery);

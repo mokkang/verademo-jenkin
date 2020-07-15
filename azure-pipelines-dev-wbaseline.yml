@@ -39,7 +39,10 @@ steps:
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'
+    destinationFolder: '$(System.DefaultWorkingDirectory)/pipeline'
     cleanDestinationFolder: false
+  displayName: 'Extract the Pipeline Scan'
+
 - task: DownloadPipelineArtifact@2
   inputs:
     source: specific
@@ -47,5 +50,5 @@ steps:
     pipeline: 12
     artifact: pipeline
 - script: |
-    java -jar pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"
+    java -jar $(System.DefaultWorkingDirectory)/pipeline/pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"
   displayName: 'Run Veracode Pipeline Scan'

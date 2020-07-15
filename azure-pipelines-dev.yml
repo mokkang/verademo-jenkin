@@ -36,19 +36,25 @@ steps:
 
 - script: |
     curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+  displayName: 'Download Latest Pipeline Scan'
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: 'pipeline-scan-LATEST.zip'
     destinationFolder: '$(System.DefaultWorkingDirectory)/pipeline'
     cleanDestinationFolder: false
+  displayName: 'Extract the Pipeline Scan'
+
 - script: |
     java -jar $(System.DefaultWorkingDirectory)/pipeline/pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --json_output_file="baseline.json" || true
+  displayName: 'Run the Pipeline Scan and create a baseline'
+
 - publish: $(System.DefaultWorkingDirectory)/baseline.json
   artifact: pipeline
+  displayName: 'Publish the baseline file'
+
 - task: Bash@3
+  displayName: 'Output the pipeline id for use later'
   inputs:
     targetType: 'inline'
     script: |
-      # Write your commands here
-      
       echo 'pipeline id is: $(System.DefinitionId)'

@@ -45,10 +45,18 @@ steps:
 
 - task: DownloadPipelineArtifact@2
   inputs:
-    source: specific
-    project: 'Verademo_pipeline'
-    pipeline: 12
-    artifact: pipeline
+    buildType: 'specific'
+    project: '678f21aa-60c7-4608-a8c8-6f2abf7c0d1e'
+    definition: '12'
+    buildVersionToDownload: 'latest'
+    artifactName: 'pipeline'
+    targetPath: '$(Pipeline.Workspace)'
+#- task: DownloadPipelineArtifact@2
+#  inputs:
+#    source: specific
+#    project: 'Verademo_pipeline'
+#    pipeline: 12
+#    artifact: pipeline
 - script: |
     java -jar $(System.DefaultWorkingDirectory)/pipeline/pipeline-scan.jar -vid $(vid) -vkey $(vkey) -f /home/vsts/work/1/s/target/verademo.war --baseline_file "../baseline.json"
   displayName: 'Run Veracode Pipeline Scan'

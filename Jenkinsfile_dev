@@ -23,6 +23,9 @@ pipeline {
       }
       stage('Veracode Pipeline Scan') {
          // upload and scan
+         agent {
+            docker { image 'ubuntu-latest' }
+         }
          steps {
             withCredentials([usernamePassword(credentialsId: 'Veracode', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
                sh '''

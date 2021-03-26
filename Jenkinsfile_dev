@@ -24,7 +24,7 @@ pipeline {
       stage('Veracode Pipeline Scan') {
          // upload and scan
          steps {
-            withCredentials([usernamePassword(credentialsId: 'VeracodeNH', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
+            withCredentials([usernamePassword(credentialsId: 'Veracode', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
                sh '''
                   curl -s -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
                   unzip -o pipeline-scan-LATEST.zip

@@ -56,4 +56,4 @@ steps:
     workItemType: 'Issue'
     area: '$(system.teamProject)'
     addCustomTag: 'Veracode'
-    flawImportLimit: '1000'
+    flawImportLimit: '10000'

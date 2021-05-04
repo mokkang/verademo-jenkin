@@ -1,0 +1,37 @@
+pipeline {
+   agent {
+      docker {
+         image 'maven:3.6.3-openjdk-8'
+      }
+   }
+   stages {
+      stage('Build') {
+         steps {
+            // Get some code from a GitHub repository
+            git 'https://github.com/christyson/verademo'
+            sh 'mvn -ntp package'
+         }
+      }
+      stage('SCA SC') {
+         steps {
+            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+               sh '''
+                  curl -sSL https://download.sourceclear.com/ci.sh | sh
+               '''
+            }
+         }
+      }
+      stage('Veracode SAST Scan') {
+         // upload and scan
+         steps {
+            withCredentials([usernamePassword(credentialsId: 'Veracode', passwordVariable: 'VERACODEKEY', usernameVariable: 'VERACODEID')]) {
+               sh '''
+                  curl -s -o veracodeJavaAPI.jar https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/20.8.7.1/vosp-api-wrappers-java-20.8.7.1.jar
+                  unzip -o pipeline-scan-LATEST.zip
+                  java -jar veracodeJavaAPI.jar -vid $VERACODEID -vkey $VERACODEKEY -action UploadAndScan -appname '$JOB_NAME' -createprofile true -autoscan true -filepath ./target/verademo.war -version "$BUILD_NUMBER" -scantimeout 15 -createProfile true -criticality 'High'
+               '''
+            }
+         }
+      }
+   }
+}

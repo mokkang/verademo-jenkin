@@ -29,7 +29,7 @@ jobs:
       - name: Veracode Software Composition Analysis
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-        run: |
+#        run: |
 #         curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --debug --allow-dirty
 #         curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --debug --skip-collectors pipenv
         uses: Lerer/veracode-sca@v1.0.4

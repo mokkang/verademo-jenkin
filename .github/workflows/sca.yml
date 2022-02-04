@@ -29,7 +29,25 @@ jobs:
       run: |
         git config --global user.email "christyson@users.noreply.github.com"
         git config --global user.name "Chris Tyson"
-        curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan $EXTRA_ARGS
+        curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan $EXTRA_ARGS > veracode-sca-results.txt
+        
+    - name: Check for existing Vulnerabilities
+      id: check-vulnerabilities
+      run: |
+          cat veracode-sca-results.txt
+          TEMP_VULN_EXISTS=$(grep 'Risk Vulnerabilities' veracode-sca-results.txt | awk '{sums += $4} END { test = (sums>0); print test}')
+          TEMP_VULN_SUM=$(grep 'Risk Vulnerabilities' veracode-sca-results.txt | awk '{sums += $4} END { print sums}')
+          echo ::set-output name=fail::$TEMP_VULN_EXISTS
+          echo ::set-output name=sums::$TEMP_VULN_SUM
+    - name: SCA Pass
+      if: ${{ steps.check-vulnerabilities.outputs.fail == 1 }}
+      uses: actions/github-script@v3
+      env:
+        VULN_NUM: ${{ steps.check-vulnerabilities.outputs.sums }}
+      with:
+        script: |
+          console.log(process.env.VULN_NUM);
+          core.setFailed(`Found ${process.env.VULN_NUM} Risk Vulnerabilities in your open source libraries`);
 #name: Veracode SCA Scan
 ##
 #on: 

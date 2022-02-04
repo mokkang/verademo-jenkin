@@ -16,7 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
       - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
         with: 
           java-version: '8'
@@ -35,7 +34,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: true
           debug: true
-          path: target
+          path: '**/*.war'
           create-issues: true 
           fail-on-cvss: 1
           min-cvss-for-issue: 1

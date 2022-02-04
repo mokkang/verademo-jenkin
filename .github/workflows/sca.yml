@@ -37,6 +37,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: true
           debug: true
+          path: target
           create-issues: true 
           fail-on-cvss: 1
           min-cvss-for-issue: 1

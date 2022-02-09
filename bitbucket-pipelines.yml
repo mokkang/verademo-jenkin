@@ -33,28 +33,28 @@ pipelines:
        - step: 
            name: 'development-upload-for-sast'
            script:
-             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/20.8.7.1/vosp-api-wrappers-java-20.8.7.1.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY}
+             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true -sandboxname "bitbucket-development" -createsandbox true
-               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in pipeline ${BITBUCKET_PROJECT_KEY}"
+               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
 #    allow_failure: true
     
        - step: 
            name: 'release-upload-for-sast'
            script:
-             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/20.8.7.1/vosp-api-wrappers-java-20.8.7.1.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY}
+             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true -sandboxname "bitbucket-release" -createsandbox true
-               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in pipeline ${BITBUCKET_PROJECT_KEY}"
+               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
 #         allow_failure: true
     
        - step: 
            name: 'policy-upload-for-sast'
            script:
-             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/20.8.7.1/vosp-api-wrappers-java-20.8.7.1.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY}
+             - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true
-               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in pipeline ${BITBUCKET_PROJECT_KEY}"
+               -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
                -scantimeout 15
                
     feature/*:
@@ -88,7 +88,7 @@ pipelines:
            script:
              - curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
              - unzip pipeline-scan-LATEST.zip pipeline-scan.jar
-             - java -jar pipeline-scan.jar -f target/verademo.war -vid ${TEAM_ANALYSISCENTER_ID} -vkey ${TEAM_ANALYSISCENTER_KEY} --fail_on_severity="Very High, High" --fail_on_cwe="80" --issue_details true
+             - java -jar pipeline-scan.jar -f target/verademo.war -vid ${VERACODE_ID} -vkey ${VERACODE_KEY} --fail_on_severity="Very High, High" --fail_on_cwe="80" --issue_details true
 # - First we are downloading the latest Pipeline Scanner, and extracting and running it.
 # - Next, we have are calling our API Credentials, pointing the scanner at the artifact we wish to scan, and then have our failure parameters in place.
 # - If you wish to utilize Baseline File, you would add that as another line to point that at your baseline.json file which would sit in this repository.

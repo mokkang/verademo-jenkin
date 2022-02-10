@@ -55,7 +55,8 @@ pipelines:
              - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true
                -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
-               -scantimeout 15
+# - optionally waith for the scan to complete
+#               -scantimeout 15
                
     feature/*:
     

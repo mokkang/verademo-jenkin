@@ -86,7 +86,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: false
           debug: false
-          create-issues: false 
+          create-issues: true 
           fail-on-cvss: 1
           min-cvss-for-issue: 1
 #         path: '**/*.war'

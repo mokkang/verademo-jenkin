@@ -32,6 +32,10 @@ steps:
           export SRCCLR_SCM_REF_TYPE=branch
           export SRCCLR_SCM_REV="$(build.buildNumber)"
           curl -sSL https://download.sourceclear.com/ci.sh | bash -s -- scan --update-advisor
+  continueOnError: true
+  env:
+    SRCCLR_API_TOKEN: $(SRCCLR_API_TOKEN)
+
 - task: Veracode@3
   displayName: Veracode Static Scan 
   inputs:

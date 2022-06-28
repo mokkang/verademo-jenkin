@@ -67,13 +67,14 @@ jobs:
         uses: actions/checkout@v2
       - name: List Directory looking for scaResults.json
         run: |
-          ls -lshart app; ls -lshart .; ls -lharts /tmp;
+          ls -lshart app; ls -lshart .; ls -lharts /tmp; ls -lharts ${HOME};
+          echo "${HOME}/app" >> $GITHUB_PATH
       - name: Run Veracode SCA
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-        #uses: veracode/veracode-sca@v1.0.8
-          run: | 
-           curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json 
+        uses: veracode/veracode-sca@v1.0.8
+        #run: | 
+           #curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json 
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           quick: true

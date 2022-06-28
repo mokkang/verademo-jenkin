@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Upload-Scan-SCA-Policy
+name: Upload-Scan-Policy-Import-Flaws
 
 # Controls when the workflow will run
 on:
@@ -44,12 +44,20 @@ jobs:
         with:
           appname: '${{ secrets.VERACODE_APP_NAME }}'
           filepath: app/target/verademo.war
-          vid: '${{ secrets.VERACODE_API_ID }}'
+          vid: xfasdfasdfasdf${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           scantimeout: 60
           createprofile: false
         continue-on-error: true
 
+  on: 
+  push:
+    paths-ignore:
+      - "README.md"
+  #schedule:
+  #  - cron: 15 14 * * 6
+
+  jobs:
   veracode-sca-task:
     runs-on: ubuntu-latest
     name: Scan repository for Issues
@@ -113,4 +121,4 @@ jobs:
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
           scan-results-json: '/tmp/policy_flaws.json'
-          github-token: ${{ secrets.GITHUB_TOKEN }}  
+          github-token: ${{ secrets.GITHUB_TOKEN }}

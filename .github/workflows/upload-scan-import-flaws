@@ -44,7 +44,7 @@ veracode-upload-scan:
   # Call Veracode Upload and Scan Action
   runs-on: ubuntu-latest
       
-  # Steps represnt the stesp with Veracode Upload and Scan
+  # Steps represent the stesp with Veracode Upload and Scan
   steps:
       
   - uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.

@@ -68,19 +68,23 @@ jobs:
       - name: List Directory looking for scaResults.json
         run: |
           ls -lshart app; ls -lshart .; ls -lharts /tmp; ls -lharts ${HOME};
-          echo "${HOME}/app" >> $GITHUB_PATH
       - name: Run Veracode SCA
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-        uses: veracode/veracode-sca@v1.0.8
-        #run: | 
-           #curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json 
+        #uses: veracode/veracode-sca@v1.0.8
+        run: | 
+           curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json
+           SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 --json scaresults.json
+      - uses: actions/upload-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          quick: true
-          create-issues: true 
-          fail-on-cvss: 1
-          min-cvss-for-issue: 1
+          name: SCAResults
+          path: scaresults.json
+        #with:
+        #  github_token: ${{ secrets.GITHUB_TOKEN }}
+        #  quick: true
+        #  create-issues: true 
+        #  fail-on-cvss: 1
+        #  min-cvss-for-issue: 1
       
 
 # this first step will get existing flaws for an Application Profile (in this case, NodeGoat).  

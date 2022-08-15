@@ -61,7 +61,7 @@ jobs:
          shell: pwsh
          run:          
               echo "Downloading the latest version of the Veracode Java API"              
-              curl "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/22.6.10.2/vosp-api-wrappers-java-22.6.10.2.jar" -o VeracodeJavaAPI.jar
+              curl "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/22.6.10.2/vosp-api-wrappers-java-22.6.10.2.jar" -O VeracodeJavaAPI.jar
               $appname = "Verademo"
               java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action getapplist | tee appidlist.txt
               $veracodeappid = Get-Content .\appidlist.txt | findstr $appname | %{ $_.Split('"')[1]; }

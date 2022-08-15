@@ -76,8 +76,8 @@ jobs:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
         #uses: veracode/veracode-sca@v1.0.8
         run: | 
+           SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}"
            curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaresults.json
-           SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
       - uses: actions/upload-artifact@v1
         with:
           name: SCAResults

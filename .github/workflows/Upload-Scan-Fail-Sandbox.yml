@@ -49,7 +49,7 @@ jobs:
           createprofile: false
         
   get-sandbox-results:
-      runs-on: ubuntu-latest
+      runs-on: windows-2019
       container:
         image: veracode/api-signing:latest
       steps:
@@ -58,7 +58,7 @@ jobs:
       # See the get_flaws.sh script in the helpers directory
       #		for a more elaborate method
        - name: get sandbox results
-         shell: pwsh
+         #shell: pwsh
          run:
               $Env:vid=${{ secrets.VERACODE_API_ID }}
               $Env:vkey=${{ secrets.VERACODE_API_KEY }}

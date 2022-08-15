@@ -58,11 +58,27 @@ jobs:
       # See the get_flaws.sh script in the helpers directory
       #		for a more elaborate method
        - name: get sandbox results
-         run: | 
-              export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
-              export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
+         shell: pwsh
+         run:
+              export $vid=${{ secrets.VERACODE_API_ID }}
+              export $vkey=${{ secrets.VERACODE_API_KEY }}
+              echo "Downloading the latest version of the Veracode Java API"
+              $versionstring = curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | findstr /r "latest";
+              $version = $versionstring.Trim() -replace '<latest>','' -replace '</latest>','';
+              curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$version/vosp-api-wrappers-java-$version-dist.zip -o dist.zip
+              7z e dist.zip -y
+              $appname = "Verademo"
+              java -jar VeracodeJavaAPI.jar -vid $env:vid -vkey $env:vkey -action getapplist | tee appidlist.txt
+              $veracodeappid = Get-Content .\appidlist.txt | findstr $appname | %{ $_.Split('"')[1]; }
+              echo "Pulling the Sandbox ID List"
               java -jar VeracodeJavaAPI.jar -vid $env:vid -vkey $env:vkey -action getsandboxlist -appid $veracodeappid | tee sandboxlist.txt
-          
+              $veracodesandboxid = Get-Content .\sandboxlist.txt | findstr /r "sandbox_id=" | %{ $_.Split('"')[9]; }
+              echo "Pulling the Build ID List"
+              java -jar VeracodeJavaAPI.jar -vid $env:vid -vkey $env:vkey -action getbuildlist -appid $veracodeappid -sandboxid $veracodesandboxid | tee getbuildlist.txt
+              $veracodebuildid = Get-Content .\getbuildlist.txt | findstr /r "build_id=" | %{ $_.Split('"')[1]; }
+              java -jar VeracodeJavaAPI.jar  -vid $env:vid -vkey $env:vkey -action passfail -appname $appname -sandboxid $veracodesandboxid > passfail.txt
+              cat passfail.txt
+              
  
   
   

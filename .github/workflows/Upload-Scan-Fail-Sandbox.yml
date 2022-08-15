@@ -60,8 +60,8 @@ jobs:
        - name: get sandbox results
          shell: pwsh
          run:
-              export $vid=${{ secrets.VERACODE_API_ID }}
-              export $vkey=${{ secrets.VERACODE_API_KEY }}
+              $Env:vid=${{ secrets.VERACODE_API_ID }}
+              $Env:vkey=${{ secrets.VERACODE_API_KEY }}
               echo "Downloading the latest version of the Veracode Java API"
               $versionstring = curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | findstr /r "latest";
               $version = $versionstring.Trim() -replace '<latest>','' -replace '</latest>','';

@@ -80,7 +80,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: SCAResults
-          path: scaresults.json
+          path: scaResults.json
         #with:
         #  github_token: ${{ secrets.GITHUB_TOKEN }}
         #  quick: true

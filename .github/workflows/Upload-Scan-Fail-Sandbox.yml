@@ -59,6 +59,8 @@ jobs:
       #		for a more elaborate method
        - name: get sandbox results
          run: | 
+              export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
+              export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
               java -jar VeracodeJavaAPI.jar -vid $env:vid -vkey $env:vkey -action getsandboxlist -appid $veracodeappid | tee sandboxlist.txt
           
  

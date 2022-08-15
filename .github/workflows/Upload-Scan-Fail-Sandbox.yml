@@ -61,7 +61,7 @@ jobs:
          shell: pwsh
          run:          
               echo "Downloading the latest version of the Veracode Java API"
-              $versionstring = curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | findstr /r "latest";
+              $versionstring = "curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml" | findstr /r "latest";
               $version = $versionstring.Trim() -replace '<latest>','' -replace '</latest>','';
               curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$version/vosp-api-wrappers-java-$version-dist.zip -o dist.zip
               7z e dist.zip -y

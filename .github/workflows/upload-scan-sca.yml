@@ -59,24 +59,35 @@ jobs:
   #    - "README.md"
   #schedule:
   #  - cron: 15 14 * * 6
+
+  #jobs:
   veracode-sca-task:
     runs-on: ubuntu-latest
-    name: Scan remote repository for Issues
+    name: Scan repository for Issues
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: List Directory looking for scaResults.json
+        run: |
+          ls -lshart app; ls -lshart .; ls -lharts /tmp; ls -lharts ${HOME};
       - name: Run Veracode SCA
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-        uses: veracode/veracode-sca@v1.0.8
-        #run: | 
-        #   curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaresults.json
-        #   SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
+        #uses: veracode/veracode-sca@v1.0.8
+        run: | 
+           curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaresults.json
+           SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
       - uses: actions/upload-artifact@v1
         with:
           name: SCAResults
           path: scaresults.json
+        #with:
+        #  github_token: ${{ secrets.GITHUB_TOKEN }}
+        #  quick: true
+        #  create-issues: true 
+        #  fail-on-cvss: 1
+        #  min-cvss-for-issue: 1
       
 
 # this first step will get existing flaws for an Application Profile (in this case, NodeGoat).  

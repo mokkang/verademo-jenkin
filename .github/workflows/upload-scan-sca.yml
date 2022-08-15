@@ -63,31 +63,18 @@ jobs:
   #jobs:
   veracode-sca-task:
     runs-on: ubuntu-latest
-    name: Scan repository for Issues
+    name: Agent-based-SCA
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: List Directory looking for scaResults.json
-        run: |
-          ls -lshart app; ls -lshart .; ls -lharts /tmp; ls -lharts ${HOME};
-      - name: Run Veracode SCA
-        env:
-          SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
-        uses: veracode/veracode-sca@v1.09
-        #run: | 
-        #   curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json
-        #   SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          quick: true
-          create-issues: true 
-          fail-on-cvss: 1
-          min-cvss-for-issue: 1
-      - uses: actions/upload-artifact@v1
-        with:
-          name: SCAResults
-          path: scaresults.json
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: Run Veracode SCA
+            env:
+              SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+            uses: veracode/veracode-sca@v1.09
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              create-issues: false
         
       
 

@@ -60,10 +60,9 @@ jobs:
   #schedule:
   #  - cron: 15 14 * * 6
 
-  #jobs:
-  veracode-sca-task:
-    runs-on: ubuntu-latest
-    name: Agent-based-SCA
+  Agent-based-SCA:
+        runs-on: ubuntu-latest
+        name: Agent-based-SCA
 
         steps:
           - name: Checkout
@@ -74,8 +73,7 @@ jobs:
             uses: veracode/veracode-sca@v1.09
             with:
               github_token: ${{ secrets.GITHUB_TOKEN }}
-              create-issues: false
-        
+              create-issues: false       
       
 
 # this first step will get existing flaws for an Application Profile (in this case, NodeGoat).  

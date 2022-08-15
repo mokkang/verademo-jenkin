@@ -58,7 +58,7 @@ jobs:
       # See the get_flaws.sh script in the helpers directory
       #		for a more elaborate method
        - name: get sandbox results
-         #shell: pwsh
+         shell: pwsh
          run:          
               echo "Downloading the latest version of the Veracode Java API"
               $versionstring = curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | findstr /r "latest";

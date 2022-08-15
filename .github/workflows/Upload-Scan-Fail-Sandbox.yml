@@ -67,7 +67,7 @@ jobs:
               $veracodeappid = Get-Content .\appidlist.txt | findstr $appname | %{ $_.Split('"')[1]; }
               echo "Pulling the Sandbox ID List"
               java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action getsandboxlist -appid $veracodeappid | tee sandboxlist.txt
-              $veracodesandboxid = Get-Content .\sandboxlist.txt | findstr /r "sandbox_id=" | %{ $_.Split('"')[9]; } | select -Last 1
+              $veracodesandboxid = Get-Content .\sandboxlist.txt | findstr /r "sandbox_id=" | %{ $_.Split('"')[9]; } | Select-Object -Last 1
               java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action passfail -appname $appname -sandboxid $veracodesandboxid > passfail.txt
               cat passfail.txt
               $scanresult = Get-Content .\\passfail.txt | %{ $_.Split('"')[7]; }

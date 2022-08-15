@@ -78,16 +78,17 @@ jobs:
         #run: | 
         #   curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app/ --quick --json=scaResults.json
         #   SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          quick: true
+          create-issues: true 
+          fail-on-cvss: 1
+          min-cvss-for-issue: 1
       - uses: actions/upload-artifact@v1
         with:
           name: SCAResults
           path: scaresults.json
-        #with:
-        #  github_token: ${{ secrets.GITHUB_TOKEN }}
-        #  quick: true
-        #  create-issues: true 
-        #  fail-on-cvss: 1
-        #  min-cvss-for-issue: 1
+        
       
 
 # this first step will get existing flaws for an Application Profile (in this case, NodeGoat).  

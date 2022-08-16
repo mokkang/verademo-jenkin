@@ -45,8 +45,11 @@ jobs:
           filepath: app/target/verademo.war
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
+          version: '${{ github.run_id }}'
           scantimeout: 60
-          createprofile: false
+          #createprofile: false
+          createsandbox: 'true'
+          sandboxname: 'DailyBuild'
         
   get-sandbox-results:
       runs-on: windows-2019

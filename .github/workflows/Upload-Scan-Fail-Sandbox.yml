@@ -50,41 +50,6 @@ jobs:
           #createprofile: false
           createsandbox: 'true'
           sandboxname: 'DailyBuild'
-        
-  get-sandbox-results:
-      needs: build
-      runs-on: windows-2019
-      #container:
-      #  image: veracode/api-signing:latest
-      steps:
-      # Note: this will only work up to about 500 flaws
-      #		due to Veracode results limiting
-      # See the get_flaws.sh script in the helpers directory
-      #		for a more elaborate method
-       - name: get sandbox results
-         shell: pwsh
-         run:  |        
-              echo "Downloading the latest version of the Veracode Java API"              
-              curl "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/22.6.10.2/vosp-api-wrappers-java-22.6.10.2.jar" -o VeracodeJavaAPI.jar
-              $appname = "Verademo-GitHub-Actions"
-              java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action getapplist | tee appidlist.txt
-              $veracodeappid = Get-Content .\appidlist.txt | findstr $appname | %{ $_.Split('"')[1]; }
-              #$veracodeappid = 1133829
-              echo "Pulling the Sandbox ID List"
-              java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action getsandboxlist -appid $veracodeappid | tee sandboxlist.txt
-              $veracodesandboxid = Get-Content .\sandboxlist.txt | findstr /r "sandbox_id=" | %{ $_.Split('"')[9]; } | Select-Object -Last 1
-              java -jar VeracodeJavaAPI.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action passfail -appname $appname -sandboxid $veracodesandboxid > passfail.txt
-              cat passfail.txt
-              $scanresult = Get-Content .\\passfail.txt | %{ $_.Split('"')[7]; }
-                        If ($scanresult -eq "Pass")
-                        {
-                            Write-Output "The Veracode Sandbox Scan Passed, Moving to Next Step"
-                        }
-                        elseif ($scanresult -eq "Did Not Pass")
-                        {   
-                         Write-Output "The Veracode Sandbox Scan Did Not Pass, Failing the Build "
-                         throw "Exception Thrown for Failed Policy Scan"
-                        }
 
               
  

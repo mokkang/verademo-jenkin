@@ -52,6 +52,7 @@ jobs:
           sandboxname: 'DailyBuild'
         
   get-sandbox-results:
+      needs: build
       runs-on: windows-2019
       #container:
       #  image: veracode/api-signing:latest

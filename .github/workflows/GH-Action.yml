@@ -77,7 +77,7 @@ jobs:
               create-issues: false       
       
 
-# this first step will get existing flaws for an Application Profile (in this case, NodeGoat).  
+# this first step will get existing flaws for an Application Profile (in this case, Verademo).  
 # 	(obviously) Change the name=<app_name> in the first http call to be 
 #	the name of your Application on the Veracode platform
   get-policy-flaws:

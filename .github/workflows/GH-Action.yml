@@ -46,11 +46,11 @@ jobs:
           #appname: '${{ secrets.VERACODE_APP_NAME }}'
           appname: '${{github.repository}}'
           filepath: app/target/verademo.war
-          vid: ${{ secrets.VERACODE_API_ID }}'
+          vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           scantimeout: 60
-          #createprofile: false
-          createprofile: true
+          createprofile: false
+          #createprofile: true
         continue-on-error: true
 
   #on: 

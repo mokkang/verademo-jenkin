@@ -51,6 +51,7 @@ jobs:
           scantimeout: 60
           createprofile: false
           #createprofile: true
+          scanallnonfataltoplevelmodules: true
         continue-on-error: true
 
   #on: 

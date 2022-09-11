@@ -1,5 +1,4 @@
-# This is an example pipeline configuration for Veracode SAST and Agent Based Scan SCA
-      
+     
 image: maven:3.3.9
 
 pipelines:
@@ -12,10 +11,10 @@ pipelines:
        - step:
            name: 'maven'
            script:
-             - mvn compile package
+             - mvn compile package -f app/pom.xml
            artifacts:
               paths:
-                - target/verademo.war
+                - app/target/verademo.war
 
 # - Here we are running a Veracode Software Composition Analysis Agent-Based Scan 
 # - First we are invoking the Veracode SCA Agent-Based Scanner.
@@ -27,14 +26,14 @@ pipelines:
        - step:           
            name: 'Veracode Agent Based SCA Scan'
            script:
-              - curl -sSL https://download.sourceclear.com/ci.sh | sh
+              - curl -sSL https://download.sourceclear.com/ci.sh | sh 
 
 
        - step: 
            name: 'development-upload-for-sast'
            script:
              - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true -sandboxname "bitbucket-development" -createsandbox true
                -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
 #    allow_failure: true
@@ -43,7 +42,7 @@ pipelines:
            name: 'release-upload-for-sast'
            script:
              - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true -sandboxname "bitbucket-release" -createsandbox true
                -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
 #         allow_failure: true
@@ -52,7 +51,7 @@ pipelines:
            name: 'policy-upload-for-sast'
            script:
              - wget https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$VERACODE_WRAPPER_VERSION/vosp-api-wrappers-java-$VERACODE_WRAPPER_VERSION.jar -O veracodeJavaAPI.jar 
-             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_ID} -vkey ${VERACODE_KEY}
+             - java -jar veracodeJavaAPI.jar -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY}
                -action UploadAndScan -appname "Verademo_bitbucket" -createprofile true -autoscan true
                -filepath ./target/verademo.war -version "Job ${BITBUCKET_BUILD_NUMBER} in ${BITBUCKET_PROJECT_KEY}"
 # - optionally waith for the scan to complete
@@ -65,10 +64,10 @@ pipelines:
        - step:
            name: 'maven'
            script:
-             - mvn compile package
+             - mvn compile package -f app/pom.xml
            artifacts:
               paths:
-                - target/verademo.war
+                - app/target/verademo.war
 
 # - Here we are running a Veracode Software Composition Analysis Agent-Based Scan 
 # - First we are invoking the Veracode SCA Agent-Based Scanner.
@@ -89,7 +88,7 @@ pipelines:
            script:
              - curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
              - unzip pipeline-scan-LATEST.zip pipeline-scan.jar
-             - java -jar pipeline-scan.jar -f target/verademo.war -vid ${VERACODE_ID} -vkey ${VERACODE_KEY} --fail_on_severity="Very High, High" --fail_on_cwe="80" --issue_details true
+             - java -jar pipeline-scan.jar -f app/target/verademo.war -vid ${VERACODE_API_ID} -vkey ${VERACODE_API_KEY} --fail_on_severity="Very High, High" --fail_on_cwe="80" --issue_details true
 # - First we are downloading the latest Pipeline Scanner, and extracting and running it.
 # - Next, we have are calling our API Credentials, pointing the scanner at the artifact we wish to scan, and then have our failure parameters in place.
 # - If you wish to utilize Baseline File, you would add that as another line to point that at your baseline.json file which would sit in this repository.

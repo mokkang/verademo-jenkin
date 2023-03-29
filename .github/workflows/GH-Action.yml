@@ -52,7 +52,7 @@ jobs:
           createprofile: false
           #createprofile: true
           scanallnonfataltoplevelmodules: true
-        continue-on-error: true
+        continue-on-error: false
 
   #on: 
   #push:

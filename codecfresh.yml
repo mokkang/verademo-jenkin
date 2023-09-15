@@ -1,0 +1,79 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "clone"
+  - "build"
+  - "Veracode SCA"
+  - "Veracode Pipeline Scan"
+  - "Veracode Policy Scan"
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "mokkang/github-verademo"
+    # CF_BRANCH value is auto set when pipeline is triggered
+    # Learn more at codefresh.io/docs/docs/codefresh-yaml/variables/
+    revision: "${{CF_BRANCH}}"
+    git: "github"
+    stage: clone
+  build:
+    title: Compile
+    stage: build
+    image: maven:3.5.3
+    commands:
+      - cd verademo/app
+      - mvn package install -f app/pom.xml
+  software-composition-analysis:
+    title: Veracode SCA
+    stage: Veracode SCA
+    image: maven:3.5.3
+    commands:
+      - export $SRCCLR_API_TOKEN=SRCCLR_API_TOKEN
+      - curl -sSL https://download.srcclr.com/ci.sh | sh 
+  pipeline-scan:
+    title: Pipeline-Scan
+    stage: Veracode Pipeline Scan
+    image: veracode/pipeline-scan:latest
+    commands:
+      - java -jar /opt/veracode/pipeline-scan.jar 
+        -vid=$VERACODE_API_ID
+        -vkey=$VERACODE_API_KEY
+        -f ./app/target/verademo.war
+  policy-scan:
+    title: Static Upload and Scan
+    stage: Veracode Policy Scan 
+    image: veracode/api-wrapper-java:latest
+    commands:
+      - java -jar /opt/veracode/api-wrapper.jar 
+        -vid $VERACODE_API_ID 
+        -vkey $VERACODE_API_KEY
+        -action UploadAndScan 
+        -createprofile false 
+        -appname VeraDemo 
+        -version CODEFRESH_BUILD_${{CF_BUILD_ID}}
+        -filepath verademo/app/target/verademo.war
+    pass-fail-check:
+      title: Generate Reporting in JSON for Splunk
+      stage: Veracode-Reporting
+      image: veracode/api-signing:latest
+      commands: 
+        cd /tmp
+        java -jar /opt/veracode/api-wrapper.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action passfail -appname ${{ env.APP_NAME }} > passfail.txt
+        passfail=$(cat passfail.txt)
+        if echo "$passfail" | grep -q "Did Not Pass"; then
+          echo "The scan did not pass policy" 
+          exit 1
+        else 
+          echo "The scan did pass policy"
+        fi
+    reporting-api-call:
+      title: Generate JSON file for Vulnerability Management
+      stage: Veracode Reporting
+      image: veracode/api-signing:latest
+      commands: 
+ #       cd /tmp
+      #  java -jar /opt/veracode/api-wrappper.jar -vid ${{ secrets.VERACODE_API_ID }} -vkey ${{ secrets.VERACODE_API_KEY }} -action passfail
+
+

@@ -69,7 +69,7 @@ jobs:
           export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
           guid=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v1/applications?name=NodeGoat" | jq -r '._embedded.applications[0].guid') 
           echo GUID: ${guid}
-          total_flaws=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True" | jq -r '.page.total_elements')
+          total_flaws=$(http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=SCA&violates_policy=True" | jq -r '.page.total_elements')
           echo TOTAL_FLAWS: ${total_flaws}
           http --auth-type veracode_hmac GET "https://api.veracode.com/appsec/v2/applications/${guid}/findings?scan_type=STATIC&violates_policy=True&size=${total_flaws}" > policy_flaws.json
 
